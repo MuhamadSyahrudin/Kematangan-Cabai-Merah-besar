@@ -1,0 +1,53 @@
+from flask import Flask, render_template, request
+from tensorflow.keras.models import load_model
+from PIL import Image
+import numpy as np
+import os
+
+app = Flask(__name__)
+model = load_model("densenet_class5.h5")
+class_names = ['Bukan Cabai', 'Kering', 'Matang', 'Mentah', 'Setengah Matang']
+
+descriptions = {
+    'Bukan Cabai': 'Gambar yang diunggah bukan cabai.',
+    'Kering': 'Cabai telah mengering dan kehilangan kadar air.',
+    'Matang': 'Cabai berwarna merah merata, siap untuk dipanen.',
+    'Mentah': 'Cabai masih berwarna hijau atau belum matang sepenuhnya.',
+    'Setengah Matang': 'Cabai berada di tahap transisi, sebagian merah dan sebagian masih hijau.'
+}
+
+UPLOAD_FOLDER = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    prediction = None
+    confidence = None
+    filename = None
+    description = None
+
+    if request.method == 'POST':
+        file = request.files['file']
+        if file:
+            filepath = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filepath)
+            filename = file.filename
+
+            image = Image.open(filepath).convert("RGB")
+            image = image.resize((256, 256))
+            img_array = np.expand_dims(np.array(image) / 255.0, axis=0)
+
+            pred = model.predict(img_array)
+            predicted_class = class_names[np.argmax(pred)]
+            confidence = float(np.max(pred)) * 100
+            prediction = predicted_class
+            description = descriptions.get(prediction, "Deskripsi tidak tersedia.")
+
+    return render_template("index.html",
+                           prediction=prediction,
+                           confidence=confidence,
+                           filename=filename,
+                           description=description)
+
+if __name__ == '__main__':
+    app.run(debug=True)
