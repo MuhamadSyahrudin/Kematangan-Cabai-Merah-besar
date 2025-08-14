@@ -3,9 +3,20 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 import numpy as np
 import os
+import gdown
 
 app = Flask(__name__)
-model = load_model("densenet_class5.h5")
+
+MODEL_PATH = "densenet_class5.h5"
+MODEL_URL = "https://drive.google.com/uc?id=1LrxU_DB-GmPswbMEI2ZAjfvPODgJpte4"
+
+# Download model kalau belum ada
+if not os.path.exists(MODEL_PATH):
+    print("Downloading model from Google Drive...")
+    gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
+
+model = load_model(MODEL_PATH)
+
 class_names = ['Bukan Cabai', 'Kering', 'Matang', 'Mentah', 'Setengah Matang']
 
 descriptions = {
