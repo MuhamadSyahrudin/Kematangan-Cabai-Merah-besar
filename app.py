@@ -8,8 +8,8 @@ import tensorflow as tf
 
 app = Flask(__name__)
 
-MODEL_PATH = "densenet_class5.h5"
-MODEL_URL = "https://drive.google.com/uc?id=1LrxU_DB-GmPswbMEI2ZAjfvPODgJpte4"
+MODEL_PATH = "densenet_class5.keras"
+MODEL_URL = "https://drive.google.com/uc?id=1OcPnl9MBhAYBuRy-7SIVmarTmd1b5f4T"
 
 # Download model kalau belum ada
 if not os.path.exists(MODEL_PATH):
