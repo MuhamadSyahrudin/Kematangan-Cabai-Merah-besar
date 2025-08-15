@@ -7,8 +7,8 @@ import gdown
 
 app = Flask(__name__)
 
-MODEL_PATH = "densenet_class5.h5"
-MODEL_URL = "https://drive.google.com/uc?id=1LrxU_DB-GmPswbMEI2ZAjfvPODgJpte4"
+MODEL_PATH = "densenet_class5.keras"
+MODEL_URL = "https://drive.google.com/uc?id=1-MpnTT7KVflHVOXd6DMnqO3Zbn8Amosk"
 
 # Download model kalau belum ada
 if not os.path.exists(MODEL_PATH):
