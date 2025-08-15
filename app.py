@@ -15,7 +15,7 @@ if not os.path.exists(MODEL_PATH):
     print("Downloading model from Google Drive...")
     gdown.download(MODEL_URL, MODEL_PATH, quiet=False)
 
-model = load_model(MODEL_PATH, compile=False)
+model = load_model(MODEL_PATH)
 
 class_names = ['Bukan Cabai', 'Kering', 'Matang', 'Mentah', 'Setengah Matang']
 
