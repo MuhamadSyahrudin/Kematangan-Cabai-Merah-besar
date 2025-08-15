@@ -4,6 +4,7 @@ from PIL import Image
 import numpy as np
 import os
 import gdown
+import tensorflow as tf
 
 app = Flask(__name__)
 
